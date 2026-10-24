@@ -1,0 +1,42 @@
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    char user[5][20], files[5][10][20], uname[20], fname[20];
+    int count[5] = {0}, users = 0, i, u, choice;
+
+    while (1) {
+        printf("\n1.Create User 2.Create File 3.Display 4.Exit\n");
+        scanf("%d", &choice);
+
+        if (choice == 1) {
+            printf("Enter username: ");
+            scanf("%19s", uname);
+            for (i = 0; i < users; i++)
+                if (strcmp(user[i], uname) == 0) break;
+            if (i < users) printf("User already exists\n");
+            else if (users < 5) {
+                strcpy(user[users++], uname);
+                printf("User created\n");
+            } else printf("User limit reached\n");
+        } else if (choice == 2) {
+            printf("Enter username and filename: ");
+            scanf("%19s %19s", uname, fname);
+            for (u = 0; u < users; u++)
+                if (strcmp(user[u], uname) == 0) break;
+
+            if (u == users) printf("User not found\n");
+            else if (count[u] < 10) {
+                strcpy(files[u][count[u]++], fname);
+                printf("File created\n");
+            } else printf("Directory full\n");
+        } else if (choice == 3) {
+            for (u = 0; u < users; u++) {
+                printf("%s:\n", user[u]);
+                for (i = 0; i < count[u]; i++)
+                    printf("  %s\n", files[u][i]);
+            }
+        } else break;
+    }
+    return 0;
+}
