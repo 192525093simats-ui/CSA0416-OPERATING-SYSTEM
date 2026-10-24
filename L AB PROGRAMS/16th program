@@ -1,0 +1,43 @@
+#include <stdio.h>
+
+struct Employee {
+    int id;
+    char name[30];
+    float salary;
+};
+
+int main() {
+    FILE *fp;
+    struct Employee e;
+    int n, i, rec;
+
+    fp = fopen("emp.dat", "wb+");
+    if (fp == NULL) {
+        printf("File error\n");
+        return 1;
+    }
+
+    printf("Enter number of employees: ");
+    scanf("%d", &n);
+
+    for (i = 0; i < n; i++) {
+        printf("Enter ID, name and salary: ");
+        scanf("%d %29s %f", &e.id, e.name, &e.salary);
+        fwrite(&e, sizeof(e), 1, fp);
+    }
+
+    printf("Enter record number to access: ");
+    scanf("%d", &rec);
+
+    if (rec >= 1 && rec <= n) {
+        fseek(fp, (long)(rec - 1) * sizeof(e), SEEK_SET);
+        fread(&e, sizeof(e), 1, fp);
+        printf("ID: %d\nName: %s\nSalary: %.2f\n",
+               e.id, e.name, e.salary);
+    } else {
+        printf("Invalid record number\n");
+    }
+
+    fclose(fp);
+    return 0;
+}
